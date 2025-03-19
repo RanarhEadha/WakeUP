@@ -1,0 +1,52 @@
+local const = require "main.const"
+
+go.property("target", vmath.vector3(960, 540, 0)) -- Default value; go.property allows sending properties from the factory
+
+
+function update(self, dt)
+	local pos = go.get_position()
+	pos = pos + self.dir * self.speed * dt
+	go.set_position(pos)
+	
+	if pos.x > const.screen_width + 10 or pos.x < - 10 
+	or pos.y > const.screen_height + 10 or pos.y < - 10 then
+		go.delete()
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		msg.post(message.other_id, "start_flaking")  -- Tell enemy to play effect
+		timer.delay(0.1, false, function()  -- Small delay before deleting enemy
+		end)
+		
+		const.audio_counter_shotdown = const.audio_counter_shotdown + 1
+		if const.audio_counter_shotdown <= const.audio_counter_shotdown_max then
+			local delay = math.random(0.8, 1.5)  -- so they don't all start at the same time
+			timer.delay(delay, false, function()
+				sound.play("manager:/controller_audio#SFX_thought_shot_down")
+			end)
+		end
+		go.delete(message.other_id, true)--shoudl've been under timer but only works here
+		go.delete()
+	end
+end
+
+function init(self)	
+	sound.play("manager:/controller_audio#SFX_shot3")
+	self.speed = const.shots_speed
+	self.target = self.target
+
+	-- Calculate direction once at spawn
+	local pos = go.get_position()
+	local dir = self.target - pos
+	if vmath.length_sqr(dir) > 0 then
+		self.dir = vmath.normalize(dir)
+	else
+		self.dir = vmath.vector3()
+	end
+
+	-- set rotation 
+	local angle = math.atan2(self.dir.y, self.dir.x)
+	go.set_rotation(vmath.quat_rotation_z(angle))
+end

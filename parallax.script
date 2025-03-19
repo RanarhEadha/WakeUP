@@ -1,0 +1,47 @@
+local const = require "main.const"
+
+--defines layers for the parallax effect and the move factors
+local layers = {
+	{ id = "bg", factor = 0.1 }, -- Moves the least
+	{ id = "sky_fractal1", factor = 0.2 },
+	{ id = "sky_fractal2", factor = 0.3 },
+	{ id = "pc", factor = 0.6 }, -- Moves the most
+}
+
+function init(self)	
+	msg.post(".", "acquire_input_focus")
+	self.orig_positions = {} --stores original positions of the layers
+	for _, layer in ipairs(layers) do
+		local pos = go.get_position(layer.id) --get positions of parallax layers
+		self.orig_positions[layer.id] = vmath.vector3(pos) --store positions to prevent drift
+	end
+
+	
+end
+
+
+function on_input(self, action_id, action)
+	if action_id == const.touch then
+		if action.value then
+			--dx, dy normalize coords: -1 = left/bottom, 0 = center, 1, right/top
+			local dx = (action.x - const.width_center) / const.width_center
+			local dy = (action.y - const.height_center) / const.height_center
+
+			for _, layer in ipairs(layers) do
+				local orig_pos = self.orig_positions[layer.id]
+				-- how much to offset the layer based on movement
+				local offset_x = dx * layer.factor * 50
+				local offset_y = dy * layer.factor * 50
+				--animate smoothly instead of using set_position
+				go.animate(layer.id, "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(orig_pos.x + offset_x, orig_pos.y + offset_y, orig_pos.z), go.EASING_OUTSINE, 0.1)
+			end
+		elseif not action.value then
+			for _,layer in ipairs(layers) do
+				if layer.id == "pc" then
+					local orig_pos = self.orig_positions[layer.id]
+					go.animate(layer.id, "position", go.PLAYBACK_ONCE_FORWARD, orig_pos, go.EASING_OUTSINE, 0.2)
+				end
+			end
+		end
+	end
+end

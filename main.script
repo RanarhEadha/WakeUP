@@ -1,0 +1,36 @@
+local camera = require "orthographic.camera"
+local CAMERA_ID = hash("/camera")
+local const = require "main.const"
+
+
+
+function update(self, dt)
+	local counter = const.counter_good - const.counter_bad
+	if counter <= const.victory * 0.3  then
+		sprite.play_flipbook("pc#pc_faces", hash("WU_face_emotions (1)"))
+	elseif counter >= const.victory * 0.3  then
+		sprite.play_flipbook("pc#pc_faces", hash("WU_face_emotions (2)"))
+	elseif counter >= const.victory * 0.9  then
+		sprite.play_flipbook("pc#pc_faces", hash("WU_face_emotions (3)"))
+	end	
+		
+	if counter >= const.victory  then
+		msg.post("manager:/manager#manager", "Victory!")
+	end
+end
+
+
+
+local function oscillating_fractals()
+	go.animate("/sky_fractal1#sky_fractal1", "tint.w", go.PLAYBACK_LOOP_PINGPONG, 0.2, go.EASING_INOUTSINE, 5)
+	--go.animate("/sky_fractal2#sky_fractal2", "tint.w", go.PLAYBACK_LOOP_FORWARD, 0.1, go.EASING_INOUTQUAD, 7)
+end
+
+
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	camera.set_zoom(CAMERA_ID, 1.0)
+	--oscillating_fractals() --heavy stutter
+end
+

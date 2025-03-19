@@ -1,0 +1,66 @@
+local const = require "main.const"
+
+function update(self, dt)
+	local pos = go.get_position()
+	go.set_position(pos + self.dir * self.speed * dt)
+
+	--if length of travelled path at current pos minus target pos is smaller than 5 pixels
+	-- = if distance to target is smaller than 5 pixels
+	if vmath.length(pos - self.target) < const.screen_height/6 then
+		
+		if not self.counted then
+			const.counter_bad = const.counter_bad + const.points_bad
+			const.audio_counter_badguys = const.audio_counter_badguys - 1
+			self.counted = true
+		end
+		go.animate(".", "scale", go.PLAYBACK_ONCE_PINGPONG, vmath.vector3(0.05, 0.05, 1), go.EASING_OUTBOUNCE, 0.3)
+		timer.delay(0.3, false, function()
+			go.delete(true)
+		end) --set to true to delete GO and all its children
+	end
+end
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("set_target") then  -- sent from spawning script
+		self.target = message.target
+	end
+	if message_id == hash("assign_random_sprite") then --from spawner.script
+		sprite.play_flipbook("message#sprite_writing", message.sprite)
+	end
+	if message_id == hash("start_flaking") then
+		particlefx.play("#enemy_shot_down")
+		const.audio_counter_badguys = const.audio_counter_badguys - 1
+	end
+end
+
+
+function init(self)
+	const.audio_counter_badguys = const.audio_counter_badguys + 1
+	if const.audio_counter_badguys <= const.audio_counter_badguys_max then
+		local delay = math.random(0.8, 1.5)  -- so they don't all start at the same time
+		timer.delay(delay, false, function()
+			sound.play("manager:/controller_audio#SFX_thought_flying")
+		end)
+	end
+	
+	self.speed = const.thought_speed
+	self.target = const.center_point
+	
+	-- Calculate direction once at spawn
+	local pos = go.get_position()
+	local dir = self.target - pos
+	if vmath.length_sqr(dir) > 0 then
+		self.dir = vmath.normalize(dir)
+	else
+		self.dir = vmath.vector3()
+	end
+	
+	-- set rotation and flip writing sprite when in the top right corner
+	local angle = math.atan2(self.dir.y, self.dir.x)
+	go.set_rotation(vmath.quat_rotation_z(angle))
+	local angle_deg = math.deg(angle)
+	if angle_deg > 90 or angle_deg < -90 then
+		go.set_rotation(vmath.quat_rotation_z(math.rad(180)), "message") --"message" means the sprite's GO
+	end
+end

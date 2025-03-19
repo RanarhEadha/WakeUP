@@ -1,0 +1,198 @@
+name: "main"
+scale_along_z: 0
+embedded_instances {
+  id: "bg"
+  children: "sky_fractal1"
+  children: "sky_fractal2"
+  data: "embedded_components {\n"
+  "  id: \"sky\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"WU_sky\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 1200.0\\n"
+  "  y: 675.0\\n"
+  "}\\n"
+  "size_mode: SIZE_MODE_MANUAL\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/main/images/main_images.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    x: 600.0
+    y: 338.0
+  }
+}
+embedded_instances {
+  id: "main_game"
+  data: "components {\n"
+  "  id: \"main\"\n"
+  "  component: \"/main/main.script\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "pc"
+  children: "shooter"
+  data: "embedded_components {\n"
+  "  id: \"pc\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"WU_pc_w_flares\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 753.0\\n"
+  "  y: 773.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/main/images/main_images.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    y: -15.0\n"
+  "    z: 0.1\n"
+  "  }\n"
+  "  scale {\n"
+  "    x: 0.4\n"
+  "    y: 0.4\n"
+  "  }\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"pc_faces\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"WU_face_emotions (1)\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/main/images/main_images.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    y: 38.0\n"
+  "    z: 0.11\n"
+  "  }\n"
+  "  scale {\n"
+  "    x: 0.4\n"
+  "    y: 0.4\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 600.0
+    y: 103.0
+  }
+  scale3 {
+    x: 0.8
+    y: 0.8
+  }
+}
+embedded_instances {
+  id: "controller"
+  data: "components {\n"
+  "  id: \"parallax\"\n"
+  "  component: \"/main/parallax.script\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "spawner"
+  data: "components {\n"
+  "  id: \"spawner\"\n"
+  "  component: \"/main/spawner.script\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"thoughts_enemies\"\n"
+  "  component: \"/main/thoughts_enemies.collectionfactory\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "sky_fractal1"
+  data: "embedded_components {\n"
+  "  id: \"sky_fractal1\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"WU_sky_fractal1\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 1673.0\\n"
+  "  y: 1080.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/main/images/main_images.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    x: -188.0
+    y: 5.0
+  }
+  scale3 {
+    x: 0.657399
+    y: 0.632727
+  }
+}
+embedded_instances {
+  id: "sky_fractal2"
+  data: "embedded_components {\n"
+  "  id: \"sky_fractal2\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"WU_sky_fractal2\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 1288.0\\n"
+  "  y: 835.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/main/images/main_images.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    x: 273.0
+    y: 88.0
+  }
+  scale3 {
+    x: 0.657399
+    y: 0.632727
+  }
+}
+embedded_instances {
+  id: "spawner_good"
+  data: "components {\n"
+  "  id: \"spawner_good\"\n"
+  "  component: \"/main/spawner_good.script\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"thoughts_goodguys\"\n"
+  "  component: \"/main/thoughts_goodguys.collectionfactory\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "shooter"
+  data: "components {\n"
+  "  id: \"shooter\"\n"
+  "  component: \"/main/shooter.factory\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"spawner_shooter\"\n"
+  "  component: \"/main/spawner_shooter.script\"\n"
+  "}\n"
+  ""
+  position {
+    x: -1.5
+    y: 58.5
+    z: 0.1
+  }
+  scale3 {
+    x: 0.6
+    y: 0.6
+  }
+}

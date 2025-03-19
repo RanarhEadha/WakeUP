@@ -1,0 +1,92 @@
+name: "thoughts_good"
+scale_along_z: 0
+embedded_instances {
+  id: "goodguys_root"
+  children: "goodguys_body"
+  children: "message"
+  data: "components {\n"
+  "  id: \"thought_behaviour_goodguys\"\n"
+  "  component: \"/main/thought_behaviour_goodguys.script\"\n"
+  "}\n"
+  "components {\n"
+  "  id: \"goodguy_shot_down\"\n"
+  "  component: \"/main/goodguys_shot_down.particlefx\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"collisionobject\"\n"
+  "  type: \"collisionobject\"\n"
+  "  data: \"type: COLLISION_OBJECT_TYPE_KINEMATIC\\n"
+  "mass: 0.0\\n"
+  "friction: 0.1\\n"
+  "restitution: 0.5\\n"
+  "group: \\\"default\\\"\\n"
+  "mask: \\\"default\\\"\\n"
+  "embedded_collision_shape {\\n"
+  "  shapes {\\n"
+  "    shape_type: TYPE_SPHERE\\n"
+  "    position {\\n"
+  "      x: 30.0\\n"
+  "      y: -1.0\\n"
+  "    }\\n"
+  "    rotation {\\n"
+  "    }\\n"
+  "    index: 0\\n"
+  "    count: 1\\n"
+  "  }\\n"
+  "  data: 28.30774\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  scale3 {
+    x: 0.7
+    y: 0.7
+  }
+}
+embedded_instances {
+  id: "goodguys_body"
+  data: "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"anim_goodguys_sketch\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 398.0\\n"
+  "  y: 383.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/main/images/main_images.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "message"
+  data: "embedded_components {\n"
+  "  id: \"sprite_writing\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"WU_thoughts_good1\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 154.0\\n"
+  "  y: 145.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/main/images/main_images.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    x: 27.0
+    y: 4.0
+    z: 0.1
+  }
+  scale3 {
+    x: 0.3
+    y: 0.3
+  }
+}

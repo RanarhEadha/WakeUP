@@ -1,0 +1,28 @@
+
+function b2i(value)--returns 1 or 0 from true or false
+	if value then
+		return 1
+	end
+	return 0
+end
+
+
+local function roll_table(chance_table)--Norman's sort-and-roll function
+local thresholds = {}
+for threshold in pairs(chance_table) do
+	table.insert(thresholds, threshold)
+end
+table.sort(thresholds)  -- Sort the keys in ascending order
+
+-- Generate a random number between 0 and 1
+local random_value = math.random()
+
+-- Iterate through the sorted thresholds
+for _, threshold in ipairs(thresholds) do
+	if random_value <= threshold then
+		return chance_table[threshold]
+	end
+end
+return nil
+end
+

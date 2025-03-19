@@ -1,0 +1,73 @@
+local camera = require "orthographic.camera"
+local const = require "main.const"
+local CAMERA_ID = hash("/camera")
+
+local function layer_main_music()
+	local fading_time = 8
+	local counter = const.counter_good - const.counter_bad
+	local starting_point_low = const.victory * 0.3
+	local starting_point_high = const.victory * 0.6
+
+	sound.play("manager:/controller_audio#SFX_main_track1", { gain = 1.0 })
+	sound.play("manager:/controller_audio#SFX_main_track2", { gain = 0 })
+	sound.play("manager:/controller_audio#SFX_main_track3", { gain = 0 })
+	if counter <= starting_point_low  then
+		go.animate("manager:/controller_audio#SFX_main_track2", "gain", go.PLAYBACK_LOOP_FORWARD, 1, go.EASING_LINEAR, fading_time)
+		print("Started main2 track")
+	end
+	if counter >= starting_point_high then
+		go.animate("manager:/controller_audio#SFX_main_track3", "gain", go.PLAYBACK_LOOP_FORWARD, 1, go.EASING_LINEAR, fading_time)
+		print("Started main3 track")
+	end	
+end
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("proxy_loaded") then --enable all loaded proxies (theoretically)
+		msg.post(sender, "enable")
+	end
+
+	if message_id == hash("load_main") then
+		msg.post("#px_startup", "unload")
+		msg.post("#px_main", "load")
+		layer_main_music()
+		
+	end
+	if message_id == hash("Victory!") then
+		msg.post("#px_main", "unload")
+		msg.post("#px_victory", "load")
+	end
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("quit_game") then --quit button functionality
+		sys.exit(0)
+	end
+	if action_id == const.touch and action.pressed then
+		sound.play("/controller_audio#SFX_click")--sound for all mouse clicks
+	end
+	if action_id == hash("pause") and action.pressed then
+		if self.paused then
+			msg.post("#px_main", "set_time_step", {factor = 1, mode = 1})
+		else
+			msg.post("#px_main", "set_time_step", {factor = 0, mode = 0})
+		end
+		self.paused = not self.paused
+	end	
+end
+
+
+function init(self)
+	--print("Manager Loaded at" .. msg.url())
+	math.randomseed(os.time()) --random needs to be initialised
+	msg.post(".", "acquire_input_focus")
+	msg.post("#px_startup", "load")
+	self.paused = false
+	
+	local camera_pos = vmath.vector3(const.width_center, const.height_center, 0)
+	go.set_position(camera_pos, "camera")
+	camera.set_zoom(CAMERA_ID, 1.0)
+	
+	msg.post("camera", "use_projection", { projection = hash("FIXED_AUTO") })
+	--defos.set_fullscreen(true)--requires defOS library
+end
