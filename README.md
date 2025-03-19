@@ -11,3 +11,5 @@ If you run into trouble, help is available in [our forum](https://forum.defold.c
 Happy Defolding!
 
 ---
+
+Just left that there. WakeUP created for Red Pill Jam 1, March '25, https://itch.io/jam/red-pill-jam-1
